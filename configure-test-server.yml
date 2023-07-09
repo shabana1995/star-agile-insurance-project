@@ -1,16 +1,18 @@
-
----
-- hosts: test-server
+name: Configure Docker on test-server
+  hosts: test-server
   become: true
-  tasks:
-  - name: update apt
+  tasks :
+  - name: updating apt
     command: sudo apt-get update
 
-  - name: install docker
-    command: sudo apt install -y docker.io
+  - name: Install Docker
+    command: sudo apt-get install -y docker.io
 
-  - name: start docker service
+  - name: Start Docker Service
     command: sudo systemctl start docker
+    
+  - name: To remove existing insure-me container
+    command: sudo docker rm -f my-insure 
 
-  - name: deploy insureme application
-    command: sudo docker run -itd -p 8085:8081  shabana4195/project-insure-me:1.0
+  - name: Deploy Docker Container
+    command: docker run -itd -p 8081:8081 --name my-insure shabana4195/project-insure-me:1.0
